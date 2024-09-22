@@ -2,7 +2,10 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-// Function to read students asynchronously
+/**
+ * Counts the students in a CSV data file.
+ * @param {String} databasePath The path to the CSV data file.
+ */
 const countStudents = (databasePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(databasePath, 'utf8', (err, data) => {
@@ -53,7 +56,7 @@ const app = http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write('This is the list of our students\n');
 
-    const databasePath = process.argv[2]; // Get the database path from command-line arguments
+    const databasePath = process.argv[2]; // Get the database path from cmd-line args
     try {
       const studentsList = await countStudents(databasePath);
       res.end(studentsList);
