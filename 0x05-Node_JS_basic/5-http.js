@@ -1,11 +1,7 @@
 const http = require('http');
 const fs = require('fs');
-const path = require('path');
 
-/**
- * Counts the students in a CSV data file.
- * @param {String} databasePath The path to the CSV data file.
- */
+// Function to read students asynchronously
 const countStudents = (databasePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(databasePath, 'utf8', (err, data) => {
@@ -14,7 +10,7 @@ const countStudents = (databasePath) => {
         return;
       }
 
-      const lines = data.split('\n').filter(line => line.trim() !== '');
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
 
       if (lines.length <= 1) {
         reject(new Error('Cannot load the database'));
@@ -35,10 +31,10 @@ const countStudents = (databasePath) => {
       const totalStudents = studentRecords.length;
       let result = `Number of students: ${totalStudents}\n`;
 
-      for (const field in studentsByField) {
+      Object.keys(studentsByField).forEach((field) => {
         const students = studentsByField[field];
         result += `Number of students in ${field}: ${students.length}. List: ${students.join(', ')}\n`;
-      }
+      });
 
       resolve(result.trim());
     });
@@ -56,10 +52,10 @@ const app = http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write('This is the list of our students\n');
 
-    const databasePath = process.argv[2]; // Get the database path from cmd-line args
+    const databasePath = process.argv[2]; // Get the database path from command-line arguments
     try {
       const studentsList = await countStudents(databasePath);
-      res.end(studentsList);
+      res.end(`${studentsList}`);
     } catch (error) {
       res.end(error.message);
     }
