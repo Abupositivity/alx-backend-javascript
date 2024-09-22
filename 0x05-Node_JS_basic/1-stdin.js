@@ -1,11 +1,15 @@
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+process.stdout.write("Welcome to Holberton School, what is your name?\n");
 
-// Listen for user input from stdin
+// Listen for user input from stdin (standard input)
 process.stdin.on('data', (input) => {
-  const name = input.toString().trim();
-  console.log(`Your name is: ${name}`);
+    const name = input.toString().trim(); // Convert input to string and remove extra spaces/newline
+    console.log(`Your name is: ${name}`);
+    
+    // End the program after displaying the user's name
+    process.exit();
+});
 
-  // End the process after displaying the message
-  console.log('This important software is now closing');
-  process.exit(); // Close the process
+// Listen for process exit event
+process.on('exit', () => {
+    console.log("This important software is now closing");
 });
